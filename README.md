@@ -5,7 +5,7 @@ Fuel-App is a fuel price search application based on sefaz's API and its main ob
 
 # Framework used
 
-I am using **Ionic** in its latest version, with node v12.18.2.
+I am using **Ionic** version **9.1.6** do angular, with node v12.18.2.
 
 # API documentation
 
