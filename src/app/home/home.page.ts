@@ -10,6 +10,8 @@ import { GetPostService } from '../services/get-post.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  public fuelStation = [];
+
   constructor(private actionSheetController: ActionSheetController, private getPostService: GetPostService) {}
 
   public async presentActionSheet() {
@@ -21,7 +23,6 @@ export class HomePage {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');
           this._getCommonGasolinePrices();
         }
       }, {
@@ -54,8 +55,13 @@ export class HomePage {
       latitude: -9.6432331,
       longitude: -35.7190686,
       raio: 15
-    }
+    };
 
-    this.getPostService.getFuelStation(request).subscribe(data => console.log('JSON', data));
+    this.getPostService.getFuelStation(request)
+    .then(data => {
+      data.map(strutucte => this.fuelStation.push(strutucte));
+      console.log('JSON', data);
+    })
+    .catch(error => console.error(error));
   }
 }

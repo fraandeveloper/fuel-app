@@ -11,7 +11,18 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>App Fuel</strong>
-  </div>
+  <ion-card *ngFor="let station of fuelStation">
+    <ion-item>
+      <!-- <ion-icon name="pin" slot="start"></ion-icon> -->
+      <ion-label>{{ station.nomFantasia }}</ion-label>
+      <ion-button fill="outline" slot="end">Mapa</ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+      <ion-card-title>{{ station.valUnitarioUltimaVenda | currency:'BRL':true }}</ion-card-title>
+      <br/>
+      <ion-card-subtitle [style.fontSize]="'13px'">{{ station.nomLogradouro }} - {{ station.nomBairro }}</ion-card-subtitle>
+      <ion-card-subtitle [style.fontSize]="'13px'">{{ station.nomMunicipio}}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
