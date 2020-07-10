@@ -1,28 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-button (click)="presentActionSheet()" expand="block" color="dark" fill="outline">Gasolina</ion-button>
+    <ion-title size="large">Fuel App</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-toolbar>
+  <ion-item>
+    <ion-range #range (ionChange)="_range(range.value)" min="1" max="15" step="1" pin="true">
+      <ion-icon size="small" slot="start" name="walk-outline"></ion-icon> 
+    </ion-range>
+  </ion-item>
+</ion-toolbar> 
 
-  <ion-card *ngFor="let station of fuelStation">
-    <ion-item>
-      <!-- <ion-icon name="pin" slot="start"></ion-icon> -->
-      <ion-label>{{ station.nomFantasia }}</ion-label>
-      <ion-button fill="outline" slot="end">Mapa</ion-button>
-    </ion-item>
+<ion-content [fullscreen]="true">
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-card *ngFor="let station of fuelStation">
+      <ion-item>
+        <ion-icon name="pin"></ion-icon>
+        <ion-card-title [style.marginLeft.px]="10">{{ station.nomFantasia }}</ion-card-title>
+      </ion-item>
+    
+      <ion-card-content>
+        <ion-card-title>
+          <p>{{ station.valUnitarioUltimaVenda | currency:'BRL':true }}</p>
+          <div class="ion-card-title--description">
+            <small>{{ station.dscProduto }}</small>
+          </div>
+        </ion-card-title>
+        <br/>
+        <ion-card-subtitle [style.fontSize]="'14px'">{{ station.nomLogradouro }}</ion-card-subtitle>
+        <ion-card-subtitle [style.fontSize]="'13px'">{{ station.nomBairro }}</ion-card-subtitle>
+        <div class="ion-card-map">
+          <ion-button (click)="goToPageMaps(station)" fill="outline" slot="end">Mapa</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
   
-    <ion-card-content>
-      <ion-card-title>{{ station.valUnitarioUltimaVenda | currency:'BRL':true }}</ion-card-title>
-      <br/>
-      <ion-card-subtitle [style.fontSize]="'13px'">{{ station.nomLogradouro }} - {{ station.nomBairro }}</ion-card-subtitle>
-      <ion-card-subtitle [style.fontSize]="'13px'">{{ station.nomMunicipio}}</ion-card-subtitle>
-    </ion-card-content>
-  </ion-card>
+    <ion-fab (click)="presentActionSheet()" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
 </ion-content>

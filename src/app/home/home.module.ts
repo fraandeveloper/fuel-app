@@ -11,6 +11,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { GetPostService } from '../services/get-post.service';
 import { JwtInterceptorProvider } from '../services/jwt-interceptor.service';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { JwtInterceptorProvider } from '../services/jwt-interceptor.service';
   ],
   declarations: [HomePage],
   providers: [
+    Geolocation,
     GetPostService,
     JwtInterceptorProvider
   ]

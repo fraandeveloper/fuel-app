@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
+
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { GetPostService } from '../services/get-post.service';
 
@@ -12,56 +14,116 @@ import { GetPostService } from '../services/get-post.service';
 export class HomePage {
   public fuelStation = [];
 
-  constructor(private actionSheetController: ActionSheetController, private getPostService: GetPostService) {}
+  public rage: number;
+  public latitude: number;
+  public longitude: number;
+  public chooseGasoline: number;
+
+  constructor(
+    private actionSheetController: ActionSheetController,
+    private getPostService: GetPostService,
+    private geolocation: Geolocation,
+    public navCtrl: NavController) {
+      this._getLocation();
+    }
 
   public async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Escola a gasolina',
+      header: 'Tipo do combustível',
       cssClass: 'my-custom-class',
       buttons: [{
-        text: 'Gasolina comun',
+        text: 'Gasolina Comun',
         role: 'destructive',
-        icon: 'trash',
+        icon: 'water-outline',
         handler: () => {
-          this._getCommonGasolinePrices();
+          this._getCommonGasolinePrices(1);
         }
       }, {
-        text: 'Gasolina aditivada',
-        icon: 'share',
+        text: 'Gasolina Aditivada',
+        icon: 'water-outline',
         handler: () => {
-          console.log('Share clicked');
+          this._getCommonGasolinePrices(2);
         }
       }, {
         text: 'Álcool',
-        icon: 'caret-forward-circle',
+        icon: 'water-outline',
         handler: () => {
-          console.log('Play clicked');
+          this._getCommonGasolinePrices(3);
         }
       }, {
-        text: 'Diesel comum',
-        icon: 'heart',
+        text: 'Diesel Comum',
+        icon: 'water-outline',
         handler: () => {
-          console.log('Favorite clicked');
+          this._getCommonGasolinePrices(4);
+        }
+      }, {
+        text: 'Diesel Aditivado',
+        icon: 'water-outline',
+        handler: () => {
+          this._getCommonGasolinePrices(5);
+        }
+      }, {
+        text: 'Gás Natural (GNV)',
+        icon: 'water-outline',
+        handler: () => {
+          this._getCommonGasolinePrices(6);
         }
       }]
     });
     await actionSheet.present();
   }
 
-  private _getCommonGasolinePrices(): void {
+  public doRefresh(event) {
+    this._getCommonGasolinePrices(this.chooseGasoline);
+    setTimeout(() => {
+      if (this.fuelStation.length > 0) {
+        event.target.complete();
+      }
+    }, 2000);
+  }
+
+  private _range(event: any): void {
+    this.rage = (typeof event === 'undefined') ? 1 : event;
+  }
+
+  private _getLocation(): void {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      const { coords: { latitude, longitude } } = resp;
+      this.latitude = latitude;
+      this.longitude = longitude;
+    }).catch((error) => console.log('Error getting location', error));
+  }
+
+  private _getCommonGasolinePrices(type: number = 1): void {
+    this.chooseGasoline = type;
+    this.fuelStation = [];
+
     const request = {
-      codTipoCombustivel: '1',
-      dias: 3,
-      latitude: -9.6432331,
-      longitude: -35.7190686,
-      raio: 15
+      codTipoCombustivel: `${type}`,
+      dias: 5,
+      latitude: this.latitude,
+      longitude: this.longitude,
+      raio: (this.rage === undefined) ? 1 : this.rage
     };
 
     this.getPostService.getFuelStation(request)
     .then(data => {
       data.map(strutucte => this.fuelStation.push(strutucte));
-      console.log('JSON', data);
     })
     .catch(error => console.error(error));
+  }
+
+  public goToPageMaps(data?): void {
+    const { numLongitude, numLatitude } = data;
+    console.log('Item clicado ==>', data);
+
+    const coords = {
+      queryParams: {
+        latitude: numLatitude,
+        longitude: numLongitude,
+      }
+    };
+
+    this.navCtrl.navigateForward(['/maps'], coords);
   }
 }

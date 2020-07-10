@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  AppToken: 'SUA KEY'
+  AppToken: 'Your key',
+  mapBox: 'Your key'
 };
 
 /*

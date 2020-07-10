@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'maps',
+    loadChildren: () => import('./maps/maps.module').then( m => m.MapsModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
