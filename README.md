@@ -1,11 +1,28 @@
 # Welcome to Fuel App!
 
-Fuel-App is a fuel price search application based on sefaz's API and its main objective is to help the consumer when filling his vehicle with the cheapest fuel.
+The Fuel-App is a fuel price research application based on sefaz's API and its main objective is to help consumers fill their vehicle with the cheapest fuel.
+For this project I am using Ionic with mapBox integration.
 
 
-# Framework used
+# Framework and Library
 
-I am using **Ionic** version **9.1.6** do angular, with node v12.18.2.
+In this project I used Ionic in version 9.1.6 with nodeJs version v12.18.2, for integration with the map, I used the [mapBox](https://www.mapbox.com/).
+
+# How to use
+
+ To use this project you will need to install the ionic dependency:
+```
+npm install -g @ionic/cli
+```
+After installing the ionic dependency and cloning the project on your machine, run:
+```
+npm install
+```
+Finally run
+```
+ionic serve
+```
+
 
 # API documentation
 
