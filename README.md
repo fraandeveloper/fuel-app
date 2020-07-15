@@ -23,7 +23,3 @@ Finally run
 ionic serve
 ```
 
-
-# API documentation
-
-[documentation link sefaz](http://www.sefaz.al.gov.br/api/#api-nfce-consultarPrecosCombustivel)
